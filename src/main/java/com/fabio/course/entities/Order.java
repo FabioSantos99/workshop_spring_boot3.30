@@ -38,7 +38,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_id")
 	private User client;
 	
-	@OneToMany(mappedBy = "id.order")
+	@OneToMany(mappedBy = "id.order", fetch = FetchType.EAGER)
 	private Set<OrderItem> items = new HashSet<>();
 	
 	public Order() {
@@ -95,8 +95,6 @@ public class Order implements Serializable {
 	public Set<OrderItem> getItem() {
 		return items;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -115,10 +113,5 @@ public class Order implements Serializable {
 		return Objects.equals(client, other.client) && Objects.equals(id, other.id)
 				&& Objects.equals(moment, other.moment);
 	}
-	
-	
-	
-	
-	
-	
+
 }
