@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fabio.course.entities.User;
 import com.fabio.course.repositories.UserRepository;
+import com.fabio.course.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UseService {
@@ -21,7 +22,7 @@ public class UseService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
@@ -31,4 +32,17 @@ public class UseService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+	
+	public User update(Long id, User obj) {
+		User entity = repository.getReferenceById(id);
+		UpdateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void UpdateData(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+	}
+	
 }
