@@ -45,9 +45,15 @@ public class UseService {
 	}
 	
 	public User update(Long id, User obj) {
+		try {
 		User entity = repository.getReferenceById(id);
 		UpdateData(entity, obj);
 		return repository.save(entity);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException(id);
+			
+		}
 	}
 
 	private void UpdateData(User entity, User obj) {
